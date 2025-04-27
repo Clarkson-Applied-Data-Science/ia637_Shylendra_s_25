@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <h1 class="app-title">Localized Price Comparison App</h1>
+        <div class="user-greeting">
+            Hello, <strong>{{ me.name }}</strong> ({{ me.user_id }}, {{ me.role }})
+        </div>
+
+        <div class="menu-links">
+            <a href="/team/dashboard2" class="menu-button">📊 Team Dashboard</a>
+            <a href="/users/manage" class="menu-button">👥 Manage Users</a>
+            <a href="/vehicles/manage" class="menu-button">🏪 Manage Stores</a>
+            <a href="/team/dashboard" class="menu-button">🔍 View Users</a>
+            <a href="/logout" class="menu-button logout">🚪 Logout</a>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background: linear-gradient(145deg, #e3f2fd, #fce4ec);
+            font-family: 'Segoe UI', sans-serif;
+            position: relative;
+        }
+
+        .app-title {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-shadow: 1px 1px #fff;
+        }
+
+        .user-greeting {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .menu-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-button {
+            background-color: #0077cc;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1rem;
+            width: 240px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #005fa3;
+            transform: scale(1.03);
+        }
+
+        .logout {
+            background-color: #e74c3c;
+        }
+
+        .logout:hover {
+            background-color: #c0392b;
+        }
+
+        /* Sprinkle faded dollar signs */
+        body::before {
+            content: "$ $ $ $ $";
+            font-size: 10rem;
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            color: rgba(0, 0, 0, 0.03);
+            transform: rotate(-20deg);
+        }
+
+        body::after {
+            content: "$ $ $ $ $";
+            font-size: 8rem;
+            position: absolute;
+            bottom: 15%;
+            right: 5%;
+            color: rgba(0, 0, 0, 0.03);
+            transform: rotate(15deg);
+        }
+    </style>
+{% endblock %}

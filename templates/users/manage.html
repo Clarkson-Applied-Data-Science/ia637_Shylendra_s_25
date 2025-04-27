@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-6">
+    <h2 class="text-xl font-semibold mb-4">Edit User</h2>
+    <div class="text-red-600 mb-4">
+        {% if obj.errors|length > 0 %}
+            {% for error in obj.errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <form action="/users/manage?pkval={{ obj.data[0].user_id }}&action=update" method="POST" class="bg-white shadow-md rounded p-6">
+        <label class="block mb-2">Name:</label>
+        <input class="form-input w-full mb-4" type="text" name="name" value="{{ obj.data[0].name }}">
+
+        <label class="block mb-2">Email:</label>
+        <input class="form-input w-full mb-4" type="text" name="email" value="{{ obj.data[0].email }}">
+
+        <label class="block mb-2">Location:</label>
+        <input class="form-input w-full mb-4" type="text" name="location" value="{{ obj.data[0].location }}">
+
+        <label class="block mb-2">Password:</label>
+        <input class="form-input w-full mb-4" type="password" name="password">
+
+        <label class="block mb-2">Retype Password:</label>
+        <input class="form-input w-full mb-4" type="password" name="password2">
+
+        <label class="block mb-2">Role:</label>
+        <select name="role" class="form-select w-full mb-6">
+            {% for role in obj.roles %}
+                <option value="{{ role.value }}" {% if obj.data[0].role == role.value %}selected{% endif %}>{{ role.text }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Submit" class="btn-primary">
+    </form>
+
+    <div class="mt-6">
+        <a href="/users/manage?pkval={{ obj.data[0].user_id }}&action=delete" class="text-red-500 underline">Delete this user</a>
+    </div>
+</div>
+{% endblock %}

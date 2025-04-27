@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>Localized Price Comparison App</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <script src='/static/plotly-2.35.2.min.js'></script>
+        <style>
+            body {
+                background-color: #f5f8ff;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                position: relative;
+            }
+
+            header {
+                background: linear-gradient(to right, #4a90e2, #0077cc);
+                color: white;
+                padding: 20px;
+                text-align: center;
+                font-size: 1.8rem;
+                font-weight: bold;
+                letter-spacing: 1px;
+                box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+                position: relative;
+                z-index: 2;
+            }
+
+            .dollar-sparkle::before {
+                content: "$ $ $ $ $";
+                font-size: 3rem;
+                color: rgba(0, 0, 0, 0.03);
+                position: absolute;
+                top: 30%;
+                left: 20%;
+                transform: rotate(-15deg);
+                pointer-events: none;
+            }
+
+            main {
+                padding: 30px;
+                margin: 0 auto;
+                max-width: 960px;
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.06);
+                z-index: 3;
+                position: relative;
+            }
+
+            a {
+                text-decoration: none;
+                color: #0077cc;
+                font-weight: 500;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body class="dollar-sparkle">
+        <header>
+            Localized Price Comparison App
+        </header>
+        <div style="padding: 10px 30px;">
+            <a href="/main">🏠 Main Menu</a>
+        </div>
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </body>
+</html>

@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="heading">🛒 Localized Price Comparison App – Admin Dashboard</h1>
+
+<!-- Top Analytics about Prices -->
+<div class="dashboard-cards" style="margin-bottom: 50px;">
+    <div class="card glowing-card"><h3>Total Products</h3><p>{{ price_analytics.total_products }}</p></div>
+    <div class="card glowing-card"><h3>Avg Price ($)</h3><p>{{ price_analytics.avg_price | round(2) }}</p></div>
+    <div class="card glowing-card"><h3>Max Discount (%)</h3><p>{{ price_analytics.max_discount | round(2) }}</p></div>
+</div>
+
+<!-- Top User Summary Cards -->
+<div class="dashboard-cards">
+    <div class="card"><h3>Total Users</h3><p>{{ stats.total_users }}</p></div>
+    <div class="card"><h3>Admins</h3><p>{{ stats.total_admins }}</p></div>
+    <div class="card"><h3>Sellers</h3><p>{{ stats.total_sellers }}</p></div>
+    <div class="card"><h3>Buyers</h3><p>{{ stats.total_buyers }}</p></div>
+    <div class="card"><h3>Active Users</h3><p>{{ active_user_count }}</p></div>
+</div>
+
+<!-- Fancy Charts -->
+<canvas id="roleChart"></canvas>
+<canvas id="activityChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctxRole = document.getElementById('roleChart').getContext('2d');
+new Chart(ctxRole, {
+    type: 'pie',
+    data: {
+        labels: ['Admins', 'Sellers', 'Buyers'],
+        datasets: [{
+            data: [{{ stats.total_admins }}, {{ stats.total_sellers }}, {{ stats.total_buyers }}],
+            backgroundColor: ['#0d6efd', '#20c997', '#ffc107']
+        }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+});
+
+const ctxActivity = document.getElementById('activityChart').getContext('2d');
+new Chart(ctxActivity, {
+    type: 'bar',
+    data: {
+        labels: ['Active Users', 'Inactive Users'],
+        datasets: [{
+            label: 'Users',
+            data: [{{ active_user_count }}, {{ stats.total_users - active_user_count }}],
+            backgroundColor: ['#198754', '#dc3545']
+        }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+});
+</script>
+
+<h2 style="text-align:center; margin-top: 50px;">📊 Price Trends - Last 7 Days</h2>
+<canvas id="priceTrendsChart" width="800" height="400" style="margin: 50px auto; display: block; max-width: 90%;"></canvas>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('priceTrendsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ price_trends | map(attribute='update_date') | list | tojson }},
+            datasets: [
+                {
+                    label: 'Avg Today\'s Price ($)',
+                    data: {{ price_trends | map(attribute='avg_price') | list | tojson }},
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13,110,253,0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Avg Discount (%)',
+                    data: {{ price_trends | map(attribute='avg_discount') | list | tojson }},
+                    borderColor: '#ffc107',
+                    backgroundColor: 'rgba(255,193,7,0.1)',
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'nearest'
+                },
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+});
+</script>
+
+
+<!-- Recently Joined Users Table -->
+<h2 style="text-align:center; margin-top: 40px;">🆕 Recently Joined Users</h2>
+<div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search names...">
+    <select id="roleFilter">
+        <option value="">All Roles</option>
+        <option value="admin">Admin</option>
+        <option value="seller">Seller</option>
+        <option value="buyer">Buyer</option>
+    </select>
+</div>
+
+<table id="usersTable">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Location</th>
+            <th>Joined At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in recent_users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.location }}</td>
+            <td>{{ user.created_at|format_datetime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Active Users Table -->
+<h2 style="text-align:center; margin-top: 40px;">✅ Currently Active Users</h2>
+
+<table id="activeUsersTable">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Location</th>
+            <th>Last Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in active_users %}
+        <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.location }}</td>
+            <td>{{ user.updated_at|format_datetime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    const keyword = this.value.toLowerCase();
+    document.querySelectorAll('#usersTable tbody tr').forEach(row => {
+        const name = row.cells[1].textContent.toLowerCase();
+        row.style.display = name.includes(keyword) ? '' : 'none';
+    });
+});
+document.getElementById('roleFilter').addEventListener('change', function() {
+    const role = this.value.toLowerCase();
+    document.querySelectorAll('#usersTable tbody tr').forEach(row => {
+        const userRole = row.cells[3].textContent.toLowerCase();
+        row.style.display = !role || userRole === role ? '' : 'none';
+    });
+});
+</script>
+
+<style>
+.heading {
+    text-align: center;
+    font-size: 34px;
+    color: #0d6efd;
+    font-family: 'Segoe UI', sans-serif;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.dashboard-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    border-radius: 16px;
+    padding: 25px;
+    width: 230px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    transition: 0.3s ease;
+}
+
+.glowing-card {
+    background: linear-gradient(145deg, #e0f7fa, #ffffff);
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px #0dcaf0; }
+    to { box-shadow: 0 0 20px #0dcaf0; }
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #495057;
+}
+
+.card p {
+    font-size: 28px;
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+canvas {
+    margin: 40px auto;
+    max-width: 500px;
+    display: block;
+}
+
+.filter-bar {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.filter-bar input, .filter-bar select {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    font-size: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+th {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: bold;
+}
+</style>
+
+{% endblock %}

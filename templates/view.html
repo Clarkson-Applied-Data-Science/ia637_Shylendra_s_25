@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom right, #f2f9ff, #d6ecff);
+        font-family: 'Segoe UI', sans-serif;
+        position: relative;
+    }
+
+    .dashboard-heading {
+        text-align: center;
+        font-size: 28px;
+        color: #004080;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    table {
+        margin: auto;
+        background-color: white;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 90%;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    td, th {
+        padding: 12px 18px;
+        border: 1px solid #ddd;
+    }
+
+    input[type="text"] {
+        padding: 6px 10px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        width: 250px;
+        margin-right: 10px;
+    }
+
+    input[type="submit"] {
+        padding: 8px 14px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    select {
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+        margin-right: 10px;
+    }
+
+    /* Sprinkle $ symbols */
+    .dollar {
+        position: absolute;
+        font-size: 32px;
+        color: rgba(0, 128, 0, 0.15);
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { top: 100%; opacity: 0; }
+        50% { opacity: 0.4; }
+        100% { top: -10%; opacity: 0; }
+    }
+</style>
+
+<div class="dashboard-heading">Localized Price Comparison App - Team Dashboard</div>
+
+<form method="get" action="/team/dashboard">
+    <label for="role">Filter by Role:</label>
+    <select name="role" id="role">
+        <option value="">All</option>
+        <option value="admin" {% if selected_role == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="seller" {% if selected_role == 'seller' %}selected{% endif %}>Seller</option>
+        <option value="buyer" {% if selected_role == 'buyer' %}selected{% endif %}>Buyer</option>
+    </select>
+
+    <input type="text" name="name" placeholder="🔍 Search names..." value="{{ search_name }}">
+    <input type="submit" value="Apply">
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in users %}
+        <tr>
+            <td>{{ row.user_id }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.role }}</td>
+            <td>{{ row.location }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Floating $ signs -->
+{% for _ in range(12) %}
+<span class="dollar" style="left: {{ (loop.index0 * 8) % 100 }}%;">$</span>
+{% endfor %}
+
+{% endblock %}

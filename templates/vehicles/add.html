@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 class="text-xl font-bold mb-4">🚗 Add New Store</h2>
+    <form action="/vehicles/manage?action=insert" method="POST" class="space-y-4">
+        <div>
+            <label for="name" class="block font-semibold">Store Name</label>
+            <input type="text" name="name" class="input-box">
+        </div>
+        <div>
+            <label for="location" class="block font-semibold">Location</label>
+            <input type="text" name="location" class="input-box">
+        </div>
+        <div>
+            <label for="contact_info" class="block font-semibold">Contact Info</label>
+            <input type="text" name="contact_info" class="input-box">
+        </div>
+        <div>
+            <label for="user_id" class="block font-semibold">Owner (Seller)</label>
+            <select name="user_id" class="input-box">
+                {% for owner in obj.owners %}
+                <option value="{{ owner.user_id }}">{{ owner.name }} ({{ owner.email }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn-submit">➕ Add Store</button>
+    </form>
+</div>
+{% endblock %}

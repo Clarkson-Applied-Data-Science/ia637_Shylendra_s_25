@@ -1,0 +1,9 @@
+CREATE TRIGGER before_price_update BEFORE UPDATE ON Prices
+ FOR EACH ROW BEGIN
+  IF NEW.todays_price != OLD.todays_price THEN
+    SET NEW.discount = ROUND((NEW.original_price - NEW.todays_price) / NEW.original_price * 100, 2);
+    
+    INSERT INTO Price_History (price_id, old_price, new_price, changed_on)
+    VALUES (OLD.price_id, OLD.todays_price, NEW.todays_price, NOW());
+  END IF;
+END

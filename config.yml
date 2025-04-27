@@ -1,0 +1,13 @@
+db:
+  user: 'bangars'
+  pw: 'Shylu@123456'
+  host: 'mysql.clarksonmsda.org'
+  db: 'bangars_price_camparision_app'
+  port: 3306
+tables:
+  user: 'Users'
+  vehicle: 'Stores'
+  products: 'Products'
+  p_history: 'Price_History'
+  prices: 'Prices'
+  categories: 'Categories'

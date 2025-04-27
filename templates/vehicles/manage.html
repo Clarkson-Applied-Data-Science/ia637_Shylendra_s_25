@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 class="text-xl font-bold mb-4">✏️ Edit Store</h2>
+
+    {% if obj.errors|length > 0 %}
+        <div class="error_text text-red-600 mb-4">
+            {% for error in obj.errors %}
+                <div>⚠️ {{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form action="/vehicles/manage?pkval={{ obj.data[0].store_id }}&action=update" method="POST" class="space-y-4">
+        <div>
+            <label for="name" class="block font-semibold">Store Name</label>
+            <input type="text" name="name" value="{{ obj.data[0].name }}" class="input-box">
+        </div>
+        <div>
+            <label for="location" class="block font-semibold">Location</label>
+            <input type="text" name="location" value="{{ obj.data[0].location }}" class="input-box">
+        </div>
+        <div>
+            <label for="contact_info" class="block font-semibold">Contact Info</label>
+            <input type="text" name="contact_info" value="{{ obj.data[0].contact_info }}" class="input-box">
+        </div>
+        <div>
+            <label for="user_id" class="block font-semibold">Owner (Seller)</label>
+            <select name="user_id" class="input-box">
+                {% for owner in obj.owners %}
+                    <option value="{{ owner.user_id }}" {% if obj.data[0].user_id == owner.user_id %}selected{% endif %}>
+                        {{ owner.name }} ({{ owner.email }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="flex space-x-4 mt-4">
+            <button type="submit" class="btn-submit">💾 Save Changes</button>
+            <a href="/vehicles/manage?pkval={{ obj.data[0].store_id }}&action=delete" class="btn-delete">🗑️ Delete</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex flex-col items-center px-4 py-8 text-center bg-gradient-to-tr from-sky-100 to-white shadow-lg rounded-2xl">
+    <h1 class="text-4xl font-bold text-blue-800 mb-4">💲 Localized Price Comparison App 💲</h1>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6">Price Comparison for "<span class="text-blue-600">{{ query }}</span>"</h2>
+
+    {% if results %}
+    <div class="overflow-x-auto w-full max-w-6xl bg-white border border-gray-200 shadow rounded-xl p-4">
+        <table class="min-w-full table-auto border-collapse">
+            <thead>
+                <tr class="bg-blue-100 text-blue-800 text-sm font-semibold uppercase">
+                    <th class="px-4 py-2 text-left">Product</th>
+                    <th class="px-4 py-2 text-left">Category</th>
+                    <th class="px-4 py-2 text-left">Store</th>
+                    <th class="px-4 py-2 text-left">Location</th>
+                    <th class="px-4 py-2 text-left">Original Price <span class="text-green-600 text-sm">$</span></th>
+                    <th class="px-4 py-2 text-left">Today's Price <span class="text-red-600 text-sm">$</span></th>
+                    <th class="px-4 py-2 text-left">Discount (%)</th>
+                    <th class="px-4 py-2 text-left">Last Updated</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                {% for row in results %}
+                <tr class="hover:bg-blue-50">
+                    <td class="px-4 py-2">{{ row.product_name }}</td>
+                    <td class="px-4 py-2">{{ row.category_name }}</td>
+                    <td class="px-4 py-2">{{ row.store_name }}</td>
+                    <td class="px-4 py-2">{{ row.store_location }}</td>
+                    <td class="px-4 py-2">${{ row.original_price }}</td>
+                    <td class="px-4 py-2 font-semibold text-green-600">${{ row.todays_price }}</td>
+                    <td class="px-4 py-2 text-red-500 font-bold">{{ row.discount }}%</td>
+                    <td class="px-4 py-2">{{ row.last_updated|format_datetime }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-10 w-full max-w-5xl">
+        <h3 class="text-xl font-semibold text-gray-800 mb-3">📊 Discount Chart</h3>
+        <canvas id="priceChart" class="w-full bg-white border border-gray-300 rounded-xl shadow-md"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const chartData = {
+                labels: {{ chart_data.labels|tojson }},
+                datasets: [{
+                    label: 'Discounted Price ($)',
+                    data: {{ chart_data.prices|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderRadius: 6
+                }]
+            };
+            const chartOptions = {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const tips = {{ chart_data.tooltips|tojson }};
+                                return tips[context.dataIndex] || '';
+                            }
+                        }
+                    }
+                }
+            };
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions
+            });
+        });
+    </script>
+    {% else %}
+        <p class="text-red-600 text-lg font-medium mt-4">No products found matching "<span class="font-bold">{{ query }}</span>". Try a different search term.</p>
+    {% endif %}
+
+    <div class="mt-6">
+        <a href="/main" class="text-blue-600 hover:underline mr-6">🔙 Back to Dashboard</a>
+        <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+    </div>
+</div>
+{% endblock %}

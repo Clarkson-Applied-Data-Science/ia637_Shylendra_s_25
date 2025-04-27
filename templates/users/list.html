@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">User List</h2>
+        <a href="manage?pkval=new" class="btn-secondary">Create New User</a>
+    </div>
+
+    <table class="w-full bg-white shadow-md rounded border">
+        <thead class="bg-blue-50 text-blue-900">
+            <tr>
+                <th class="p-3 text-left">Edit</th>
+                <th class="p-3 text-left">Email</th>
+                <th class="p-3 text-left">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in obj.data %}
+            <tr class="hover:bg-blue-50">
+                <td class="p-3"><a class="text-blue-600 underline" href="manage?pkval={{ obj.user_id }}">Edit</a></td>
+                <td class="p-3">{{ obj.email }}</td>
+                <td class="p-3">{{ obj.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

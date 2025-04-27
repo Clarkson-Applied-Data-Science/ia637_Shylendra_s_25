@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glow-container">
+    <h2 class="page-title">🛒 All Categories - Localized Price Comparison App 💸</h2>
+
+    <ul class="category-list">
+        {% for cat in categories %}
+            <li><a href="/categories/{{ cat.category_id }}">{{ cat.category_name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Floating Dollar Signs -->
+    <div class="dollar-spray">
+        <span class="💲">$</span><span class="💲">$</span><span class="💲">$</span>
+    </div>
+</div>
+
+<style>
+    .glow-container {
+        padding: 20px;
+        border-radius: 15px;
+        background: linear-gradient(to bottom right, #fefefe, #f4f9ff);
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #034694;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px #aaa;
+    }
+
+    .category-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .category-list li {
+        margin: 12px 0;
+    }
+
+    .category-list li a {
+        font-size: 18px;
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .category-list li a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .dollar-spray {
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        font-size: 20px;
+        opacity: 0.1;
+        transform: rotate(-15deg);
+    }
+
+    .dollar-spray .💲 {
+        display: inline-block;
+        margin-right: 3px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(15deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+    }
+</style>
+{% endblock %}

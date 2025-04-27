@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #e0f7fa, #fffde7);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    h1, h2 {
+        text-align: center;
+        color: #004d40;
+        font-weight: bold;
+    }
+
+    .form-container {
+        background-color: #ffffffcc;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin: 30px auto;
+        width: 90%;
+        max-width: 700px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #00796b;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #b2dfdb;
+        border-radius: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+        background-color: #00796b;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #004d40;
+    }
+
+    .dollar-rain {
+        position: absolute;
+        z-index: 0;
+        pointer-events: none;
+        font-size: 20px;
+        opacity: 0.2;
+        color: #26a69a;
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(100vh); }
+    }
+</style>
+
+<div class="form-container">
+    <h1>Seller Dashboard 💼</h1>
+    <div id="menumsg">
+        Hello, {{ me.name }} ({{ me.user_id }}, {{ me.role }})
+    </div>
+
+    <form id="updatePriceForm" action="/seller/update_price" method="POST">
+        <h2>💲 Update Price</h2>
+        <label for="storeDropdown">Select Store:</label>
+        <select name="store_id" id="storeDropdown" onchange="loadProducts(this.value)">
+            <option value="">-- Select Store --</option>
+            {% for store in stores %}
+                <option value="{{ store.store_id }}">{{ store.name }} - {{ store.location }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="productDropdown">Select Product:</label>
+        <select name="product_id" id="productDropdown">
+            <option value="">-- Select Product --</option>
+        </select>
+
+        <label for="new_price">New Price:</label>
+        <input type="text" name="new_price" id="new_price" placeholder="e.g., 19.99">
+
+        <input type="submit" value="Update Price">
+    </form>
+</div>
+
+<div class="form-container">
+    <h2>🛒 Add New Product to a Store</h2>
+    <form id="addProductForm" action="/seller/add_product" method="POST">
+        <label for="add_store">Store:</label>
+        <select name="store_id" id="add_store">
+            {% for store in stores %}
+                <option value="{{ store.store_id }}">{{ store.name }} - {{ store.location }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="product_name">Product Name:</label>
+        <input type="text" name="product_name" placeholder="e.g., Organic Apples">
+
+        <label for="description">Description:</label>
+        <input type="text" name="description" placeholder="Short description of the product">
+
+        <label for="category_id">Category ID:</label>
+        <input type="text" name="category_id" placeholder="Enter category ID">
+
+        <label for="original_price">Original Price:</label>
+        <input type="text" name="original_price">
+
+        <label for="todays_price">Today's Price:</label>
+        <input type="text" name="todays_price">
+
+        <input type="submit" value="Add Product">
+    </form>
+</div>
+
+<div style="text-align:center; margin-bottom: 50px;">
+    <a href="/logout">Logout</a>
+</div>
+
+<script>
+    function loadProducts(storeId) {
+        fetch(`/get_products_by_store/${storeId}`)
+            .then(response => response.json())
+            .then(data => {
+                const productDropdown = document.getElementById('productDropdown');
+                productDropdown.innerHTML = '';
+                const defaultOpt = document.createElement('option');
+                defaultOpt.text = '-- Select Product --';
+                defaultOpt.disabled = true;
+                defaultOpt.selected = true;
+                productDropdown.add(defaultOpt);
+
+                data.forEach(product => {
+                    let opt = document.createElement('option');
+                    opt.value = product.product_id;
+                    opt.text = product.name;
+                    productDropdown.add(opt);
+                });
+            });
+    }
+
+    // Add raining $ symbols
+    document.addEventListener('DOMContentLoaded', () => {
+        for (let i = 0; i < 25; i++) {
+            const dollar = document.createElement('div');
+            dollar.className = 'dollar-rain';
+            dollar.innerText = '$';
+            dollar.style.left = Math.random() * 100 + 'vw';
+            dollar.style.top = '-' + (Math.random() * 200) + 'px';
+            dollar.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(dollar);
+        }
+    });
+</script>
+{% endblock %}

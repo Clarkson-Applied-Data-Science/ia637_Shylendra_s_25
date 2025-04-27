@@ -1,0 +1,49 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{ title }} - Home</title>
+    {% else %}
+    <title>Welcome to my example</title>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        overflow: hidden;
+        padding: 40px;
+      }
+      .app-title {
+        text-align: center;
+        font-size: 36px;
+        color: #0b3d91;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      }
+      .dollar {
+        position: absolute;
+        color: rgba(0, 128, 0, 0.1);
+        font-size: 24px;
+        animation: float 8s infinite ease-in-out;
+        user-select: none;
+      }
+      @keyframes float {
+        0%   { transform: translateY(0); }
+        50%  { transform: translateY(-40px); }
+        100% { transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-title">💲 Localized Price Comparison App 💲</div>
+
+    <!-- Floating dollar icons -->
+    {% for i in range(20) %}
+      <div class="dollar" style="top: {{ loop.index * 30 }}px; left: {{ (loop.index * 70) % 1000 }}px;">$</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </body>
+</html>

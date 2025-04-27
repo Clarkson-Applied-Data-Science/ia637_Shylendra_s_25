@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f4ff, #e0f7fa);
+        background-image: url("https://www.transparenttextures.com/patterns/dollar-bill.png");
+        background-repeat: repeat;
+        font-family: 'Segoe UI', sans-serif;
+        color: #333;
+    }
+
+    .dialog-container {
+        background: #fff;
+        padding: 30px 40px;
+        margin: 100px auto;
+        width: 60%;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .dialog-container h3 {
+        color: #2c3e50;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .dialog-container a {
+        text-decoration: none;
+        padding: 10px 20px;
+        background-color: #0077cc;
+        color: white;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .dialog-container a:hover {
+        background-color: #005fa3;
+    }
+</style>
+
+<div class="dialog-container">
+    <h3>{{ msg }}</h3>
+    <a href="/main">Back to Dashboard</a>
+</div>
+{% endblock %}

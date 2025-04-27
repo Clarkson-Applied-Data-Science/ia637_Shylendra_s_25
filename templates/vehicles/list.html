@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">🏬 All Stores</h2>
+        <a href="manage?pkval=new" class="btn-submit">➕ Create New</a>
+    </div>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Edit</th>
+                <th>Store Name</th>
+                <th>Location</th>
+                <th>Contact Info</th>
+                <th>Seller Name (Email)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in obj.data %}
+            <tr>
+                <td><a href="manage?pkval={{ obj.store_id }}" class="text-blue-600 underline">Edit</a></td>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.location }}</td>
+                <td>{{ obj.contact_info }}</td>
+                <td>{{ obj.seller_name }} ({{ obj.email }})</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
