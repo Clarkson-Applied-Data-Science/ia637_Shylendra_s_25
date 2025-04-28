@@ -1,5 +1,5 @@
 INSERT INTO Users ('user_id', 'name', 'email', 'password', 'role', 'location', 'created_at', 'updated_at') VALUES
-(1, 'Ben', 'alice@example.com', '716e071405a01bc613bbcf0ddbf2fd2b', 'buyer', 'New York', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
+(1, 'Alice', 'alice@example.com', '716e071405a01bc613bbcf0ddbf2fd2b', 'buyer', 'New York', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
 (2, 'Bob Smith', 'bob@example.com', '53bc33742ac6cd32694390f18638958d', 'seller', 'Los Angeles', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
 (4, 'David Brown', 'david@example.com', '8c75389832461dc868b5bbe7e5cd0212', 'seller', 'Houston', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
 (5, 'Emma', 'emma@example.com', 'a6c40ff410933ea4e59246f5c084d5dc', 'buyer', 'San Francisco', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
@@ -20,7 +20,7 @@ INSERT INTO Users ('user_id', 'name', 'email', 'password', 'role', 'location', '
 (20, 'Tina Harris', 'tina@example.com', '5378c47b09275bfc9cf8c28e7e0c49ff', 'seller', 'Nashville', '2025-03-12 16:05:05', '2025-04-23 21:54:43'),
 (21, 'Ethan Brooks', 'ethan@example.com', 'c340a8435ae47ae89838c2d8476d5acf', 'admin', 'New York', '2025-04-22 01:57:25', '2025-04-23 21:54:43'),
 (22, 'Sophia Bennett', 'sophia@example.com', 'b31d7edddc23c55fd38c26e62c2b4b9f', 'admin', 'Los Angeles', '2025-04-22 01:57:25', '2025-04-23 21:54:43'),
-(23, 'Liam Morgan', 'lianm@example.com', 'hashed_liam', 'admin', 'Chicago', '2025-04-22 01:56:33', '2025-04-23 21:54:43'),
+(23, 'Lia Morgan', 'lia@example.com', 'hashed_liam', 'admin', 'Chicago', '2025-04-22 01:56:33', '2025-04-23 21:54:43'),
 (24, 'Ava Coleman', 'ava@example.com', '1192cd480db24eacec1ff8c77c195a58', 'admin', 'Houston', '2025-04-22 01:56:33', '2025-04-23 21:54:43'),
 (25, 'Noah Foster', 'noah@example.com', '09ad6ef1a5a1759a7f0718209987adfb', 'admin', 'Seattle', '2025-04-22 01:56:33', '2025-04-23 21:54:43'),
 (26, 'Charlie', 'charlie@json.com', 'dff4cb6913ddcad5fef87b86527cb025', 'buyer', 'New York', '2025-04-23 21:41:49', '2025-04-23 21:41:49');
