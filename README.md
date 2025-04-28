@@ -116,7 +116,7 @@ Analytics panel displaying user counts, active users, and price trends.
   ![Admin Dashboard - Before](Screenshots/Admin_before_UI.png)
 
 - **After UI Enhancement:**
-  ![Admin Dashboard - After](screenshots/admin_after.png)
+  ![Admin Dashboard - After](Screenshots/admin_after.png)
 
 ---
 
@@ -127,7 +127,7 @@ Store-specific product price management and ability to add new products.
   ![Seller Dashboard - Before](Screenshots/Seller_before_UI.png)
 
 - **After UI Enhancement:**
-  ![Seller Dashboard - After](screenshots/seller_after.png)
+  ![Seller Dashboard - After](Screenshots/seller_after.png)
 
 ---
 
@@ -138,7 +138,7 @@ Product search, price comparisons, and category browsing experience.
   ![Buyer Dashboard - Before](Screenshots/Buyer_before_UI.png)
 
 - **After UI Enhancement:**
-  ![Buyer Dashboard - After](screenshots/buyer_after.png)
+  ![Buyer Dashboard - After](Screenshots/buyer_after.png)
 
 
 ## Usage Instructions
