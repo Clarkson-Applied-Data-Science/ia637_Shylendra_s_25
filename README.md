@@ -12,11 +12,11 @@ A web-based platform where users can compare product prices across various store
 - **Buyers**: Search for products, compare prices across stores, browse all available product categories.
 
 ## Test Users
-- # Buyer
+- *Buyer*
 alice@example.com | alice123
-- # Seller
+- *Seller*
 bob@example.com | bob123
-- # Admin
+- *Admin*
 ava@example.com | ava123
 
 ## Technologies Used
