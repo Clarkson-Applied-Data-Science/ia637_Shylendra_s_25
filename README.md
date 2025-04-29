@@ -11,6 +11,14 @@ A web-based platform where users can compare product prices across various store
 
 - **Buyers**: Search for products, compare prices across stores, browse all available product categories.
 
+## Test Users
+- # Buyer
+alice@example.com | alice123
+- # Seller
+bob@example.com | bob123
+- # Admin
+ava@example.com | ava123
+
 ## Technologies Used
 Backend: Flask (Python)
 
